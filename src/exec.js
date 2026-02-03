@@ -40,5 +40,19 @@ ls.stdout.on('data', (data) => {
 // 标准错误（stderr）：子进程的错误输出通过 stderr 流传回父进程。
 
 
-let child= spawn("node --version")
-child.stdout.on('data', (data) => {})
+// let child= spawn("node --version")
+// child.stdout.on('data', (data) => {})
+
+const child = spawn('findstr', ['apple'], { shell: true });
+
+
+child.stdin.write('apple orange banana\n');
+child.stdin.write('grape apple watermelon\n');
+child.stdin.write('kiwi mango\n');
+
+child.stdin.end(); // 结束输入流
+
+// 监听子进程的标准输出
+child.stdout.on('data', (data) => {
+  console.log(`stdout: ${data.toString()}`); // 打印匹配到的行
+});

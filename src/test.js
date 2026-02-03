@@ -82,16 +82,3 @@ Promise.any([task1, task2, task3]).then((result) => {
 // });
 console.log('-----');
 
-let f = setTimeout(() => {
-  setTimeout(() => {
-    setTimeout(() => {
-      console.log(1);
-    }, 1000);
-    console.log(2);
-  }, 1000);
-  console.log(3);
-}, 1000);
-let p=new Promise((resolve, reject) => {
-
-}).then()
-

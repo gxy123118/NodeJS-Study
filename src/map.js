@@ -1,15 +1,13 @@
 // 使用Set来去除一个数组中的重复元素
 // 使用Map来存储并查询一组键值对数据
-let set = new Set();
 let num = [1, 2, 2, 2, 3, 3, 4, 5];
-// num.forEach((i) => {
-//   set.add(i);
-// });
-// let numbers = num.map((i) => i);
-//
-// for (let setElement of set) {
-//   console.log(setElement);
-// }
+let set = new Set();
+
+num.forEach((i) => {
+  set.add(i);
+});
+let numbers = num.map((i) => i);
+
 let map = new Map();
 let count = 0;
 num.forEach((i) => {

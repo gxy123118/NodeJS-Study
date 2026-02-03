@@ -4,8 +4,5 @@ export function f1() {
 export function f2() {
   console.log("方法2")
 }
-//    ■ Promise对象
-//     ■ async函数
-//     ■ class相关内容
 
 
