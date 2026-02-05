@@ -82,3 +82,6 @@ Promise.any([task1, task2, task3]).then((result) => {
 // });
 console.log('-----');
 
+// console.log(Object.getPrototypeOf(u));
+// let ownPropertyDescriptors = Object.getOwnPropertyDescriptors(u);
+

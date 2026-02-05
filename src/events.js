@@ -42,17 +42,32 @@ eventEmitter.on(
 // console.log('\n--- 触发事件 ---');
 // eventEmitter.emit('e1', '参数1');
 // eventEmitter.emit('e2', '参数1');
-
-let newEM = new EventEmitter();
-newEM.on('message', async (msg) => {
-  let newVar = await new Promise((resolve) => {
-    setTimeout(() => {
-      resolve(msg);
-    }, 2000);
-  }).then((re)=>{
-    console.log(re);
-  });
-  console.log(newVar);
-});
-newEM.emit('message',"触发");
-console.log("main")
+//
+// let newEM = new EventEmitter();
+// newEM.on('message', async (msg) => {
+//   let newVar = await new Promise((resolve) => {
+//     setTimeout(() => {
+//       resolve(msg);
+//     }, 2000);
+//   }).then((re)=>{
+//     console.log(re);
+//   });
+//   console.log(newVar);
+// });
+// newEM.emit('message',"触发");
+// console.log("main")
+let tar={
+  name:"aaa"
+}
+let user={
+  name:"bbb"
+}
+Object.assign(user,tar);
+console.log(user);
+const arr=[1,2,3,4]
+arr.splice(1,2)
+let promise = Array.fromAsync([1,3]);
+promise.then((re)=>{
+  console.log(re);
+})
+// console.log(arr);
