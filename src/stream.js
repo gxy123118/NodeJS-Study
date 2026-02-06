@@ -1,5 +1,6 @@
-import Stream, { Duplex, PassThrough, Transform } from 'node:stream';
+import Stream, { Duplex, PassThrough, pipeline, Transform } from 'node:stream';
 import { read } from 'node:fs';
+import fs from 'fs';
 const Readable = Stream.Readable;
 const Writable = Stream.Writable;
 // const readable = new Readable({
@@ -49,35 +50,64 @@ const Writable = Stream.Writable;
 // duplex.write('duplex2');
 // 允许你在读写数据时进行转换处理。它可以修改或转化数据流中的内容。
 //外部 → transform.write() → 可写端输入 → transform 方法转换 → this.push() → 可读端输出 → 外部 data 事件消费。
-let transform = new Transform({
-  transform(chunk, encoding, callback) {
-    this.push(chunk + '转换');
-    callback(null);
-  },
-});
-
-transform.write('transform1');
-transform.write('transform2');
-transform.on('data', (chunk) => {
-  console.log('tran读：' + chunk.toString());
-});
-console.log('------------------');
-let readable1 = new Readable({
+// let transform = new Transform({
+//   transform(chunk, encoding, callback) {
+//     this.push(chunk + '转换');
+//     callback(null);
+//   },
+// });
+// transform.write('transform1');
+// transform.write('transform2');
+// transform.on('data', (chunk) => {
+//   console.log('tran读：' + chunk.toString());
+// });
+// transform.on('close',()=>{
+//   console.log('tran关闭');
+// })
+// console.log('------------------');
+// let readable1 = new Readable({
+//   read() {
+//     this.push('可读流');
+//     this.push(null);
+//   },
+// });
+// let writable1 = new Writable({
+//   write(chunk, encoding, callback) {
+//     console.log(chunk.toString());
+//     callback(null);
+//   },
+// });
+// // let writable2 = new Writable({
+// //   write(chunk, encoding, callback) {
+// //     console.log(chunk.toString());
+// //     callback(null);
+// //   },
+// // });
+//
+// readable1.pipe(transform).pipe(writable1);
+//
+// // let passThrough = new PassThrough();
+// //
+// pipeline(readable1,transform, writable1, (err) => {
+//   console.log(err);
+// })
+const obj = {
+  name: '111',
+  age: 12,
+};
+let readable = new Readable({
   read() {
-    this.push('可读流');
+    this.push(obj);
     this.push(null);
   },
+  objectMode: true,
+
 });
-let writable1 = new Writable({
-  write(chunk, encoding, callback) {
-    console.log(chunk.toString());
-    callback(null);
-  },
-});
-let writable2 = new Writable({
-  write(chunk, encoding, callback) {
-    console.log(chunk.toString());
-    callback(null);
-  },
-});
-readable1.pipe(transform).pipe(writable1);
+readable.on('data', (chunk) => {
+  console.log(chunk);
+})
+
+let readStream = fs.createReadStream("a.txt",{highWaterMark:3});
+readStream.on("data", (chunk) => {
+  console.log(chunk.toString());
+})
