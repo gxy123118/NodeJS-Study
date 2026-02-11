@@ -1,30 +1,26 @@
 import { EventEmitter } from 'node:events';
 
 let eventEmitter = new EventEmitter();
-let abortController = new AbortController();
-let signal = abortController.signal;
+// let abortController = new AbortController();
+// let signal = abortController.signal;
 
 function f1(p1) {
   console.log(p1);
 }
 
 // 1. 绑定侦听器（传入 { signal }）
-eventEmitter.on('e1', f1, { signal });
-eventEmitter.on(
-  'e1',
-  (p1) => {
-    console.log('e1触发111' + p1);
-  },
-  { signal },
-);
-eventEmitter.on(
-  'e2',
-  (p1) => {
-    console.log('e2触发' + p1);
-  },
-  { signal },
-);
+eventEmitter.on('e1', f1);
+eventEmitter.on('e1', (p1) => {
+  console.log('e1触发111' + p1);
+});
+let c = 0;
+eventEmitter.on('e1', f1);
+console.log('main');
+console.log(eventEmitter.listenerCount('e1'));
 
+eventEmitter.removeListener('e1', f1);
+eventEmitter.emit('e1', '参数1');
+eventEmitter.addListener()
 // 2. 绑定后，先打印一次侦听器数量（验证初始绑定成功）
 // console.log('--- 绑定后，侦听器数量 ---');
 // console.log('e1 侦听器数量：', eventEmitter.listenerCount('e1')); // 预期输出 2
@@ -56,18 +52,3 @@ eventEmitter.on(
 // });
 // newEM.emit('message',"触发");
 // console.log("main")
-let tar={
-  name:"aaa"
-}
-let user={
-  name:"bbb"
-}
-Object.assign(user,tar);
-console.log(user);
-const arr=[1,2,3,4]
-arr.splice(1,2)
-let promise = Array.fromAsync([1,3]);
-promise.then((re)=>{
-  console.log(re);
-})
-// console.log(arr);

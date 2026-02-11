@@ -1,5 +1,5 @@
 import readline from 'node:readline';
-import { Readable } from 'node:stream';
+import { Readable, Writable } from 'node:stream';
 import fs from 'fs';
 
 let readable = new Readable({
@@ -8,11 +8,21 @@ let readable = new Readable({
     this.push(null);
   },
 });
-//监听输入流（input）的 data 事件 → 对原始数据做行分割处理 → 触发自身 line 事件 → 自动调用 output 可写流的 write 方法输出行数据，整个过程是嵌套的事件触发 + 数据加工 + 流传递
+const writable = new Writable({
+  write(chunk, encoding, callback) {
+    console.log("输出:"+chunk.toString());
+    callback();
+  },
+});
+//监听输入流（input）的 data 事件 → 对原始数据做行分割处理 → 触发自身 line 事件
 let readline1 = readline.createInterface({
   input: readable,
+  // 用来“回显/渲染终端”，
   output: process.stdout,
-  terminal: false,
+  terminal: true,
+});
+readline1.on('line', (line) => {
+  console.log(`你输入的是：${line}`);
 });
 // readline1.question('请输入：', (answer) => {
 //   console.log(`你输入的是：${answer}`);
@@ -22,20 +32,27 @@ let readline1 = readline.createInterface({
 //   console.log(line);
 // })
 //专门遍历「异步可迭代对象」的语法
-
-const readFileLine=readline.createInterface({
-  input:fs.createReadStream('a.txt'),
-  output:process.stdout,
-  terminal:false
-})
-async function readFileLineDemo() {
-  for await (const line of readFileLine) {
-    console.log(line);
-  }
-}
-console.log('main');
-readFileLineDemo();
-
-
-
-
+// readline1.on('line', (line) => {
+//   console.log(line);
+// });
+// const readFileLine = readline.createInterface({
+//   input: fs.createReadStream('a.txt'),
+//   output: process.stdout,
+//   terminal: false,
+// });
+// async function readFileLineDemo() {
+//   for await (const line of readFileLine) {
+//     console.log(line);
+//   }
+// }
+// console.log('main');
+// readFileLineDemo();
+//
+// let line = readline.createInterface({
+//   input: fs.createReadStream('a.txt'),
+//   output: process.stdout,
+//   terminal: false,
+// });
+// line.on('line', (line) => {
+//   console.log("检测到换行");
+// });

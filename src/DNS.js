@@ -1,5 +1,7 @@
 import dns from 'dns';
+
 //单个 / 数组形式的 IP 信息,底层系统
+debugger;
 dns.lookup(
   'www.baidu.com',
   {
@@ -13,4 +15,7 @@ dns.lookup(
 dns.resolve("www.baidu.com","A",(err, addresses)=>{
   console.log(addresses);
 });
+dns.reverse("127.0.0.1",(err, hostnames)=>{
+  console.log(hostnames);
+})
 

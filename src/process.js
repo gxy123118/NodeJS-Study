@@ -16,10 +16,17 @@ console.log(process.ab);
 //   data.f()
 // })
 
+// ■ stdin、stdout、stderr
+// ■ exit
+// ■ 进程状态CPU、内存（可选
+process.stdin.on('data', (data) => {
+  console.log(data.toString());
+});
 process.stdout.write("输出\n");
 process.stdout.write('输出1\n');
 process.stderr.write("错误\n")
-// process.exit(-1)
+console.log("main");
+process.exit(0)
 let memoryUsage = process.memoryUsage();
 console.log(memoryUsage);
 // 步骤 1：在代码块执行前，记录初始 CPU 状态（基准值）
@@ -34,15 +41,14 @@ for (let i = 0; i < 100000000; i++) { // 1 亿次循环，产生明显的 user �
 // 步骤 3：在代码块执行后，再次统计 CPU 状态，传入基准值求差值
 const cpuDiff = process.cpuUsage(cpuStart);
 console.log(cpuDiff);
-
-//返回命令行中执行脚本时传入的参数
-console.log(process.argv);
-
-//返回环境变量对象
-console.log(process.env);
-
-//当前进程pid
-console.log(process.pid);
-
-//运行平台名称
-console.log(process.platform);
+// //返回命令行中执行脚本时传入的参数
+// console.log(process.argv);
+//
+// //返回环境变量对象
+// console.log(process.env);
+//
+// //当前进程pid
+// console.log(process.pid);
+//
+// //运行平台名称
+// console.log(process.platform);

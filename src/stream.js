@@ -3,12 +3,12 @@ import { read } from 'node:fs';
 import fs from 'fs';
 const Readable = Stream.Readable;
 const Writable = Stream.Writable;
-// const readable = new Readable({
-//   read() {
-//     this.push('Hello, Stream!'); // 推送数据到流
-//     this.push(null); // 表示数据已经结束
-//   },
-// });
+new Readable({
+  read() {
+    this.push('Hello, Stream!'); // 推送数据到流
+    this.push(null); // 表示数据已经结束
+  },
+});
 //
 // readable.on('data', (chunk) => {
 //   process.stdout.write(chunk);
@@ -91,23 +91,106 @@ const Writable = Stream.Writable;
 // pipeline(readable1,transform, writable1, (err) => {
 //   console.log(err);
 // })
-const obj = {
-  name: '111',
-  age: 12,
-};
+// ○ Stream
+// ■ 创建流（六个构造器：Stream、Readable、Writable、Duplex、Transform、PassThrough）
+// ■ 流模式：二进制流、对象流
+// ■ 可读流、可写流、可读可写流（Transform-特殊的可读可写流）的差异
+// ■ 管道：pipe、pipeline
+// const obj = {
+//   name: '111',
+//   age: 12,
+// };
+// let readable = new Readable({
+//   read() {
+//     this.push(obj);
+//     this.push(null);
+//   },
+//   objectMode: true,
+//
+// });
+// readable.on('data', (chunk) => {
+//   console.log(chunk);
+// })
+//
+// let readStream = fs.createReadStream("a.txt",{highWaterMark:3});
+// readStream.on("data", (chunk) => {
+//   console.log(chunk.toString());
+// })
+// let readable = new Readable({
+//   read(){
+//     this.push('hello world');
+//     this.push(null);
+//   }
+// });
+// readable.on('data', (chunk) => {
+//   console.log(chunk.toString());
+// })
+//
+// let writable = new Writable({
+//   write(chunk, encoding, callback) {
+//     console.log(chunk.toString());
+//     callback(null);
+//   },
+// });
+// writable.write('hello world')
+
+// let duplex = new Duplex({
+//   read(){
+//     this.push('hello world');
+//     this.push(null);
+//   },
+//   write(chunk, encoding, callback) {
+//     console.log(chunk.toString());
+//     callback(null);
+//   },
+// });
+// duplex.on('data', (chunk) => {
+//   console.log(chunk.toString());
+// })
+// duplex.write('hello world1');
+//
+let transform = new Transform({
+  transform(chunk, encoding, callback) {
+    this.push(chunk + '转换');
+    console.log('tran：' + chunk.toString());
+    callback(null);
+  },
+});
+// // transform.write('hello world2');
+// // transform.on('data', (chunk) => {
+// //   console.log(chunk.toString());
+// // })
+// //仅做转换
+// let passThrough = new PassThrough();
+// passThrough.write('hello world2');
+// passThrough.on('data', (chunk) => {
+//   console.log(chunk.toString());
+// });
+let writable = new Writable({
+  write(chunk, encoding, callback) {
+    console.log(chunk);
+    callback(null);
+  },
+  objectMode: true
+});
+// 当流启用 objectMode 时，数据不再以 Buffer 或字符串形式传递
 let readable = new Readable({
   read() {
-    this.push(obj);
+    this.push({name:111});
+    // throw new Error('错误');
     this.push(null);
   },
   objectMode: true,
-
 });
-readable.on('data', (chunk) => {
-  console.log(chunk);
-})
+readable.on('close', () => {
+  console.log('流已关闭');
+});
+readable.pipe(writable);
+// pipeline(readable,writable,(err)=>{
+//   if(err){
+//     console.log(err);
+//   }
+//   console.log('结束');
+// })
+console.log("main");
 
-let readStream = fs.createReadStream("a.txt",{highWaterMark:3});
-readStream.on("data", (chunk) => {
-  console.log(chunk.toString());
-})

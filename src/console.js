@@ -14,3 +14,4 @@ console.count("bbb")
 console.count("bbb")
 
 console.timeEnd();
+console.error("error")
